@@ -171,14 +171,14 @@
       margin-bottom: 0;
 
       &:before {
-        content: "";
+        content: '';
         margin-right: 4px;
         border-left: solid 1px transparent;
         border-radius: 4px 0;
       }
 
       &:after {
-        content: "";
+        content: '';
         flex-grow: 1;
         margin-left: 4px;
         border-right: solid 1px transparent;
@@ -187,7 +187,7 @@
 
       &:before,
       &:after {
-        content: "";
+        content: '';
         border-top: solid 1px;
         border-top-color: $input-border-color;
         pointer-events: none;
@@ -206,8 +206,7 @@
       .form-label + .form-control {
         border-color: $success !important;
         border-top-color: transparent !important;
-        box-shadow: inset 1px 0 $success, inset -1px 0 $success,
-          inset 0 -1px $success;
+        box-shadow: inset 1px 0 $success, inset -1px 0 $success, inset 0 -1px $success;
       }
 
       .form-label {
@@ -269,8 +268,7 @@
       &.is-filled {
         .form-label + .form-control {
           border-color: $danger !important;
-          box-shadow: inset 1px 0 $danger, inset -1px 0 $danger,
-            inset 0 -1px $danger;
+          box-shadow: inset 1px 0 $danger, inset -1px 0 $danger, inset 0 -1px $danger;
           border-top-color: transparent !important;
         }
         .form-label {

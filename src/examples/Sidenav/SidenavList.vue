@@ -137,17 +137,17 @@ import SidenavCollapse from "./SidenavCollapse.vue";
 export default {
   name: "SidenavList",
   props: {
-    cardBg: String
+    cardBg: String,
   },
   data() {
     return {
       title: "Soft UI Dashboard PRO",
       controls: "dashboardsExamples",
-      isActive: "active"
+      isActive: "active",
     };
   },
   components: {
-    SidenavCollapse
-  }
+    SidenavCollapse,
+  },
 };
 </script>

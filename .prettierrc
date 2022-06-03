@@ -1,0 +1,24 @@
+{
+  "singleQuote": false,
+  "trailingComma": "all",
+  "semi": true,
+  "printWidth": 86,
+  "tabWidth": 2,
+  "newLine": "lf",
+  "importOrder": [
+    "^./miscSetup$",
+    "^@nestjs/(.*)$",
+    "^nest/(.*)$",
+    "^express/(.*)$",
+    "^knex(.*)$",
+    "^objection(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "^[a-zA-Z]$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderParserPlugins": [
+    "[\"decorators\", { \"decoratorsBeforeExport\": true }]"
+  ]
+}

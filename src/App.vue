@@ -49,10 +49,10 @@ export default {
     Sidenav,
     Configurator,
     Navbar,
-    AppFooter
+    AppFooter,
   },
   methods: {
-    ...mapMutations(["toggleConfigurator", "navbarMinimize"])
+    ...mapMutations(["toggleConfigurator", "navbarMinimize"]),
   },
   computed: {
     ...mapState([
@@ -66,8 +66,8 @@ export default {
       "showNavbar",
       "showFooter",
       "showConfig",
-      "hideConfigButton"
-    ])
+      "hideConfigButton",
+    ]),
   },
   beforeMount() {
     this.$store.state.isTransparent = "bg-transparent";
@@ -77,6 +77,6 @@ export default {
     if (window.innerWidth > 1200) {
       sidenav.classList.add("g-sidenav-pinned");
     }
-  }
+  },
 };
 </script>
