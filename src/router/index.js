@@ -12,7 +12,18 @@ const routes = [
   {
     path: "/",
     name: "/",
-    redirect: "/dashboard",
+    // beforeEnter: (to, from, next) => {
+    //   console.log('beforeEnter', {to, from})
+    //   let user = localStorage.getItem("user");
+    //   if (user) return next();
+    //   else return next("/sign-in");
+    // },
+    redirect: (args) => {
+      console.log("redirect", { args });
+      let user = localStorage.getItem("user");
+
+      return user ? "/dashboard" : "/sign-in";
+    },
   },
   {
     path: "/dashboard",
@@ -60,6 +71,20 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: "active",
+});
+
+router.beforeEach((to, from, next) => {
+  let user = localStorage.getItem("user");
+  console.log({ user, from: { ...from }, to: { ...to } });
+
+  if (user) {
+    return next();
+  } else if (!user && to.fullPath !== "/sign-in") {
+    console.log();
+    return next({ path: "/sign-in" });
+  }
+
+  return next();
 });
 
 export default router;
