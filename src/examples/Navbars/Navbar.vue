@@ -56,7 +56,7 @@
               aria-labelledby="dropdownMenuButton"
             >
               <li class="mb-2">
-                <a class="dropdown-item border-radius-md" href="javascript:;">
+                <a class="dropdown-item border-radius-md" href="javascript:;" @click.prevent="logout">
                   <div class="py-1 d-flex">
                     <div class="my-auto">
                       <img
@@ -250,6 +250,14 @@ export default {
 
     toggleSidebar() {
       this.navbarMinimize();
+    },
+    async logout() {
+      try {
+        localStorage.removeItem("user")
+        await this.$router.replace({ path: "/sign-in" });
+      } catch (e) {
+        console.log("Err", e);
+      }
     },
   },
   components: {
