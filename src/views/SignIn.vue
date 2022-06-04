@@ -1,5 +1,5 @@
 <template>
-  <navbar btnBackground="bg-gradient-success" />
+  <navbar btnBackground="bg-gradient-success" v-if="false" />
   <div
     class="page-header align-items-start min-vh-100"
     style="
@@ -18,7 +18,7 @@
                 <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">
                   Sign in
                 </h4>
-                <div class="row mt-3">
+                <div class="row mt-3" v-if="isSocialLoginEnabled">
                   <div class="col-2 text-center ms-auto">
                     <a class="btn btn-link px-3" href="javascript:;">
                       <i class="fab fa-facebook text-white text-lg"></i>
@@ -46,6 +46,7 @@
                     type="text"
                     label="User Name"
                     name="User_Name"
+                    :error="error.length > 0"
                   />
                 </div>
                 <div class="mb-3">
@@ -55,14 +56,15 @@
                     type="password"
                     label="Password"
                     name="password"
+                    :error="error.length > 0"
                   />
                 </div>
-                <vmd-switch id="rememberMe" name="rememberMe"
+                <vmd-switch id="rememberMe" name="rememberMe" v-if="isSocialLoginEnabled"
                   >Remember me</vmd-switch
                 >
                 <div class="text-center">
                   <vmd-button
-                    @click.prevent="submitLogin"
+                    @click.stop.prevent="submitLogin"
                     class="my-4 mb-2"
                     variant="gradient"
                     color="success"
@@ -89,18 +91,11 @@
         <div class="row align-items-center justify-content-lg-between">
           <div class="col-12 col-md-6 my-auto">
             <div class="copyright text-center text-sm text-white text-lg-start">
-              © {{ new Date().getFullYear() }}, made with
-              <i class="fa fa-heart" aria-hidden="true"></i> by
-              <a
-                href="https://www.creative-tim.com"
-                class="font-weight-bold text-white"
-                target="_blank"
-                >Creative Tim</a
-              >
-              for a better web.
+              made with
+              <i class="fa fa-heart" aria-hidden="true"></i>
             </div>
           </div>
-          <div class="col-12 col-md-6">
+          <div class="col-12 col-md-6" v-if="false">
             <ul
               class="nav nav-footer justify-content-center justify-content-lg-end"
             >
@@ -162,6 +157,7 @@ export default {
   },
   data() {
     return {
+      isSocialLoginEnabled: false,
       submitted: false,
       error: "",
       user_name: "",
@@ -185,14 +181,18 @@ export default {
       try {
         this.submitted = true;
         let { data } = await UserService.LoginUser({
-          user_name: "828281828",
-          password: "Ami2022",
+          user_name: this.user_name,
+          password: this.password,
         });
 
         if (!data?.status) {
           this.error = data?.message || "Something went wrong!";
           return false;
         }
+
+        localStorage.setItem('user', JSON.stringify(data?.Records?.[0]));
+
+        await this.$router.replace({ path: "/dashboard" });
       } catch (e) {
         this.error = "Something went wrong!";
         console.log("Err", e);

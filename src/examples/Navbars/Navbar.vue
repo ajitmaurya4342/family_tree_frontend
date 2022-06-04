@@ -17,10 +17,11 @@
           class="pe-md-3 d-flex align-items-center"
           :class="isRTL ? 'me-md-auto' : 'ms-md-auto'"
         >
-          <vmd-input id="search" label="Search here" />
+          <vmd-input v-if="false" id="search" label="Search here" />
         </div>
+
         <ul class="navbar-nav justify-content-end">
-          <li class="nav-item d-flex align-items-center">
+          <li class="nav-item d-flex align-items-center" v-if="false">
             <router-link
               :to="{ name: 'SignIn' }"
               class="px-0 nav-link font-weight-bold lh-1"
@@ -31,6 +32,50 @@
               </i>
             </router-link>
           </li>
+
+          <li
+            class="nav-item dropdown d-flex align-items-center"
+            :class="isRTL ? 'ps-2' : 'pe-2'"
+          >
+            <a
+              href="#"
+              class="p-0 nav-link lh-1"
+              :class="[color ? color : 'text-body', showMenu ? 'show' : '']"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              @click="showMenu = !showMenu"
+            >
+              <i class="material-icons" :class="isRTL ? 'ms-sm-2' : 'me-sm-1'">
+                account_circle
+              </i>
+            </a>
+            <ul
+              class="px-2 py-3 dropdown-menu dropdown-menu-end me-sm-n4"
+              :class="showMenu ? 'show' : ''"
+              aria-labelledby="dropdownMenuButton"
+            >
+              <li class="mb-2">
+                <a class="dropdown-item border-radius-md" href="javascript:;">
+                  <div class="py-1 d-flex">
+                    <div class="my-auto">
+                      <img
+                        src="../../assets/img/team-2.jpg"
+                        class="avatar avatar-sm me-3"
+                        alt="user image"
+                      />
+                    </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-1 text-sm font-weight-normal">
+                        <span class="font-weight-bold">Sign out</span>
+                      </h6>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
             <a
               href="#"
@@ -45,6 +90,7 @@
               </div>
             </a>
           </li>
+
           <li class="px-3 nav-item d-flex align-items-center">
             <a
               class="p-0 nav-link lh-1"
@@ -56,7 +102,9 @@
               </i>
             </a>
           </li>
+
           <li
+            v-if="false"
             class="nav-item dropdown d-flex align-items-center"
             :class="isRTL ? 'ps-2' : 'pe-2'"
           >
@@ -88,8 +136,7 @@
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">New message</span> from
-                        Laur
+                        <span class="font-weight-bold">New message</span> from Laur
                       </h6>
                       <p class="mb-0 text-xs text-secondary">
                         <i class="fa fa-clock me-1"></i>
@@ -111,8 +158,8 @@
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">New album</span> by
-                        Travis Scott
+                        <span class="font-weight-bold">New album</span> by Travis
+                        Scott
                       </h6>
                       <p class="mb-0 text-xs text-secondary">
                         <i class="fa fa-clock me-1"></i>
@@ -125,9 +172,7 @@
               <li>
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="py-1 d-flex">
-                    <div
-                      class="my-auto avatar avatar-sm bg-gradient-secondary me-3"
-                    >
+                    <div class="my-auto avatar avatar-sm bg-gradient-secondary me-3">
                       <svg
                         width="12px"
                         height="12px"

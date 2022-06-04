@@ -80,20 +80,21 @@ export default {
     setMaterialInput();
   },
   methods: {
-    getClasses: (size) => {
+    getClasses: function (size) {
       let sizeValue;
 
       sizeValue = size ? `form-control-${size}` : null;
 
       return sizeValue;
     },
-    getStatus: (error, success) => {
+    getStatus: function (error, success) {
       let isValidValue;
+      let isFilled = ` ${!this?.modelValue ? "" : "is-filled"} `;
 
       if (success) {
-        isValidValue = "is-valid";
+        isValidValue = `${isFilled} is-valid`;
       } else if (error) {
-        isValidValue = "is-invalid";
+        isValidValue = `${isFilled} is-invalid`;
       } else {
         isValidValue = null;
       }

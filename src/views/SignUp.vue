@@ -4,6 +4,7 @@
       <div class="row">
         <div class="col-12">
           <navbar
+            v-if="false"
             isBlur="blur my-3 py-2 mt-4 start-0 end-0 mx-4 shadow blur border-radius-lg"
             btnBackground="bg-gradient-success"
             v-bind:darkMode="true"

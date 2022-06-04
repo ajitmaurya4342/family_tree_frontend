@@ -9,7 +9,7 @@
     <div class="shadow-lg card">
       <div class="pt-3 pb-0 bg-transparent card-header">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">Material UI Configurator</h5>
+          <h5 class="mt-3 mb-0">UI Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="mt-4 float-end" @click="toggle">
@@ -113,11 +113,12 @@
         <hr class="horizontal dark my-sm-4" />
 
         <a
+          v-if="false"
           class="btn btn-outline-dark w-100"
           href="https://www.creative-tim.com/learning-lab/vue/overview/material-dashboard/"
           >View documentation</a
         >
-        <div class="text-center w-100">
+        <div class="text-center w-100" v-if="false">
           <h6 class="mt-3">Thank you for sharing!</h6>
           <a
             href="https://twitter.com/intent/tweet?text=Check%20Vue%20Material%20Dashboard%202%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%23vuejs3&amp;url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%2Fvue-material-dashboard-2"

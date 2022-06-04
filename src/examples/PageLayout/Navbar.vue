@@ -11,7 +11,7 @@
         v-bind="$attrs"
         :class="isBlur ? 'text-dark' : 'text-white'"
       >
-        Material Dashboard 2
+        Dashboard
       </router-link>
       <button
         class="navbar-toggler shadow-none ms-2"
@@ -44,6 +44,7 @@
               Dashboard
             </router-link>
           </li>
+
           <li class="nav-item">
             <router-link class="nav-link me-2" to="/profile">
               <i
@@ -54,6 +55,7 @@
               Profile
             </router-link>
           </li>
+
           <li class="nav-item">
             <router-link class="nav-link me-2" to="/sign-up">
               <i
@@ -64,6 +66,7 @@
               Sign Up
             </router-link>
           </li>
+
           <li class="nav-item">
             <router-link class="nav-link me-2" to="/sign-in">
               <i
@@ -75,7 +78,8 @@
             </router-link>
           </li>
         </ul>
-        <ul class="navbar-nav d-lg-block d-none">
+
+        <ul class="navbar-nav d-lg-block d-none" v-if="false">
           <li class="nav-item">
             <a
               href="https://www.creative-tim.com/product/vue-material-dashboard-2"

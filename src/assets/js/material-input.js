@@ -37,7 +37,9 @@ export default function setMaterialInput() {
   var inputs = document.querySelectorAll('input');
 
   for (var i = 0; i < inputs.length; i++) {
-    if (inputs[i].hasAttribute('value')) {
+    // buggy ??
+    // console.log('inputs[i]\n', inputs[i])
+    if (inputs[i].hasAttribute('modelValue') || inputs[i].hasAttribute('value')) {
       inputs[i].parentElement.classList.add('is-filled');
     }
     inputs[i].addEventListener(
