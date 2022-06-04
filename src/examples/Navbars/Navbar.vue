@@ -56,7 +56,11 @@
               aria-labelledby="dropdownMenuButton"
             >
               <li class="mb-2">
-                <a class="dropdown-item border-radius-md" href="javascript:;" @click.prevent="logout">
+                <a
+                  class="dropdown-item border-radius-md"
+                  href="javascript:;"
+                  @click.prevent="logout"
+                >
                   <div class="py-1 d-flex">
                     <div class="my-auto">
                       <img
@@ -136,7 +140,8 @@
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">New message</span> from Laur
+                        <span class="font-weight-bold">New message</span> from
+                        Laur
                       </h6>
                       <p class="mb-0 text-xs text-secondary">
                         <i class="fa fa-clock me-1"></i>
@@ -158,8 +163,8 @@
                     </div>
                     <div class="d-flex flex-column justify-content-center">
                       <h6 class="mb-1 text-sm font-weight-normal">
-                        <span class="font-weight-bold">New album</span> by Travis
-                        Scott
+                        <span class="font-weight-bold">New album</span> by
+                        Travis Scott
                       </h6>
                       <p class="mb-0 text-xs text-secondary">
                         <i class="fa fa-clock me-1"></i>
@@ -172,7 +177,9 @@
               <li>
                 <a class="dropdown-item border-radius-md" href="javascript:;">
                   <div class="py-1 d-flex">
-                    <div class="my-auto avatar avatar-sm bg-gradient-secondary me-3">
+                    <div
+                      class="my-auto avatar avatar-sm bg-gradient-secondary me-3"
+                    >
                       <svg
                         width="12px"
                         height="12px"
@@ -253,7 +260,7 @@ export default {
     },
     async logout() {
       try {
-        localStorage.removeItem("user")
+        localStorage.removeItem("user");
         await this.$router.replace({ path: "/sign-in" });
       } catch (e) {
         console.log("Err", e);

@@ -2,9 +2,9 @@
   <navbar btnBackground="bg-gradient-success" v-if="false" />
   <div
     class="page-header align-items-start min-vh-100"
-    style="
-      background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');
-    "
+    :style="{
+      backgroundImage: `url(${require('@/assets/img/illustrations/photo-1497294815431-9365093b7331.jpg')})`,
+    }"
   >
     <span class="mask bg-gradient-dark opacity-6"></span>
     <div class="container my-auto">
@@ -59,7 +59,10 @@
                     :error="error.length > 0"
                   />
                 </div>
-                <vmd-switch id="rememberMe" name="rememberMe" v-if="isSocialLoginEnabled"
+                <vmd-switch
+                  id="rememberMe"
+                  name="rememberMe"
+                  v-if="isSocialLoginEnabled"
                   >Remember me</vmd-switch
                 >
                 <div class="text-center">
@@ -190,7 +193,7 @@ export default {
           return false;
         }
 
-        localStorage.setItem('user', JSON.stringify(data?.Records?.[0]));
+        localStorage.setItem("user", JSON.stringify(data?.Records?.[0]));
 
         await this.$router.replace({ path: "/dashboard" });
       } catch (e) {

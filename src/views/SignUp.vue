@@ -23,10 +23,7 @@
                 <div
                   class="position-relative h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center"
                   :style="{
-                    backgroundImage:
-                      'url(' +
-                      require('@/assets/img/illustrations/illustration-signin.jpg') +
-                      ')',
+                    backgroundImage: `url(${require('@/assets/img/illustrations/illustration-signin.jpg')})`,
                   }"
                 ></div>
               </div>
