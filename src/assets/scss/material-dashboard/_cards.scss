@@ -1,7 +1,7 @@
 .card {
   box-shadow: $card-box-shadow;
 
-  &[data-animation='true'] {
+  &[data-animation="true"] {
     .card-header {
       @include transform-translate-y(0);
       -webkit-transition: $header-data-animation-transition;
@@ -13,7 +13,7 @@
   }
 
   @include hover {
-    &[data-animation='true'] {
+    &[data-animation="true"] {
       .card-header {
         @include transform-translate-y(-50px);
       }
@@ -56,5 +56,5 @@
   }
 }
 
-@import 'cards/card-background';
-@import 'cards/card-rotate';
+@import "cards/card-background";
+@import "cards/card-rotate";

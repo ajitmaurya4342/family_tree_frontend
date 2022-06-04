@@ -18,7 +18,7 @@
 
   > li::before {
     // Increments only this instance of the section counter
-    content: counters(section, '.') '. ';
+    content: counters(section, ".") ". ";
     counter-increment: section;
   }
 }

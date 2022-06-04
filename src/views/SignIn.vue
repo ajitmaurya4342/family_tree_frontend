@@ -41,14 +41,16 @@
               <form role="form" class="text-start mt-3">
                 <div class="mb-3">
                   <vmd-input
-                    id="email"
-                    type="email"
-                    label="Email"
-                    name="email"
+                    v-model="user_name"
+                    id="user_name"
+                    type="text"
+                    label="User Name"
+                    name="User_Name"
                   />
                 </div>
                 <div class="mb-3">
                   <vmd-input
+                    v-model="password"
                     id="password"
                     type="password"
                     label="Password"
@@ -60,6 +62,7 @@
                 >
                 <div class="text-center">
                   <vmd-button
+                    @click.prevent="submitLogin"
                     class="my-4 mb-2"
                     variant="gradient"
                     color="success"
@@ -147,6 +150,7 @@ import VmdInput from "@/components/VmdInput.vue";
 import VmdSwitch from "@/components/VmdSwitch.vue";
 import VmdButton from "@/components/VmdButton.vue";
 import { mapMutations } from "vuex";
+import UserService from "@/services/UserService";
 
 export default {
   name: "sign-in",
@@ -155,6 +159,14 @@ export default {
     VmdInput,
     VmdSwitch,
     VmdButton,
+  },
+  data() {
+    return {
+      submitted: false,
+      error: "",
+      user_name: "",
+      password: "",
+    };
   },
   beforeMount() {
     this.toggleEveryDisplay();
@@ -166,6 +178,28 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+    async submitLogin(args) {
+      this.submitted = false;
+      this.error = "";
+
+      try {
+        this.submitted = true;
+        let { data } = await UserService.LoginUser({
+          user_name: "828281828",
+          password: "Ami2022",
+        });
+
+        if (!data?.status) {
+          this.error = data?.message || "Something went wrong!";
+          return false;
+        }
+      } catch (e) {
+        this.error = "Something went wrong!";
+        console.log("Err", e);
+      } finally {
+        this.submitted = false;
+      }
+    },
   },
 };
 </script>

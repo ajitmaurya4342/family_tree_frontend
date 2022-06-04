@@ -2,8 +2,8 @@
   float: initial !important;
   margin-left: auto !important;
 
-  &[type='checkbox'],
-  &[type='radio'] {
+  &[type="checkbox"],
+  &[type="radio"] {
     border: 1px solid darken($gray-200, 10%);
     margin-top: $form-text-margin-top;
     position: relative;
@@ -13,12 +13,12 @@
     }
   }
 
-  &[type='checkbox'] {
+  &[type="checkbox"] {
     background-image: none;
     &:after {
       transition: opacity $form-check-transition-time ease-in-out;
-      font-family: 'FontAwesome';
-      content: '\f00c';
+      font-family: "FontAwesome";
+      content: "\f00c";
       width: 100%;
       height: 100%;
       color: $form-check-input-checked-color;
@@ -38,13 +38,13 @@
     }
   }
 
-  &[type='radio'] {
+  &[type="radio"] {
     transition: border 0s;
     background: transparent;
 
     &:after {
       transition: opacity $form-check-transition-time ease-in-out;
-      content: '';
+      content: "";
       position: absolute;
       width: $form-check-radio-after-width;
       height: $form-check-radio-after-width;
@@ -76,7 +76,7 @@
 }
 
 .form-check-label,
-.form-check-input[type='checkbox'] {
+.form-check-input[type="checkbox"] {
   cursor: pointer;
 }
 

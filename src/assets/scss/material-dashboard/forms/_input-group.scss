@@ -171,14 +171,14 @@
       margin-bottom: 0;
 
       &:before {
-        content: '';
+        content: "";
         margin-right: 4px;
         border-left: solid 1px transparent;
         border-radius: 4px 0;
       }
 
       &:after {
-        content: '';
+        content: "";
         flex-grow: 1;
         margin-left: 4px;
         border-right: solid 1px transparent;
@@ -187,7 +187,7 @@
 
       &:before,
       &:after {
-        content: '';
+        content: "";
         border-top: solid 1px;
         border-top-color: $input-border-color;
         pointer-events: none;

@@ -157,7 +157,7 @@
 .text-border {
   &:after,
   &:before {
-    content: '';
+    content: "";
     display: $text-border-display;
     width: $text-border-width;
     height: $text-border-height;

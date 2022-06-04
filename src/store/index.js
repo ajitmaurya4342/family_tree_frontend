@@ -1,6 +1,6 @@
 import { createStore } from "vuex";
 
-export default createStore({
+let Store = createStore({
   state: {
     hideConfigButton: false,
     isPinned: true,
@@ -61,3 +61,5 @@ export default createStore({
   },
   getters: {},
 });
+
+export default Store;

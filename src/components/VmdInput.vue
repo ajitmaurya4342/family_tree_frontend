@@ -5,12 +5,14 @@
   >
     <label :class="variant === 'static' ? '' : 'form-label'">{{ label }}</label>
     <input
+      autocomplete="false"
       :id="id"
       :type="type"
       class="form-control"
       :class="getClasses(size)"
       :name="name"
-      :value="value"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
       :placeholder="placeholder"
       :isRequired="isRequired"
       :disabled="disabled"
@@ -23,6 +25,7 @@ import setMaterialInput from "@/assets/js/material-input.js";
 
 export default {
   name: "VmdInput",
+  emits: ["update:modelValue"],
   props: {
     variant: {
       type: String,
@@ -56,7 +59,7 @@ export default {
       type: String,
       required: true,
     },
-    value: {
+    modelValue: {
       type: String,
       default: "",
     },

@@ -353,7 +353,7 @@ hr.horizontal {
 // Vertical border w/ pseudo elem
 
 .border-right-after:after {
-  content: '';
+  content: "";
   position: absolute;
   right: 0;
   top: $border-right-after-top;
