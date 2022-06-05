@@ -32,41 +32,59 @@
               >
                 <div class="card card-plain">
                   <div class="pb-0 card-header bg-transparent mb-4">
-                    <h4 class="font-weight-bolder">Sign In</h4>
+                    <h4 class="font-weight-bolder">Sign Up</h4>
                     <p class="mb-0">
                       Enter your email and password to register
                     </p>
                   </div>
                   <div class="card-body">
-                    <form role="form">
-                      <div class="mb-3">
-                        <vmd-input
-                          id="name"
-                          type="text"
-                          label="Name"
-                          name="name"
-                          size="lg"
-                        />
+                    <form role="form" @submit.prevent="register">
+                      <div class="mb-4">
+                        <div
+                          :class="`input-group input-group-outline ${
+                            !first_name ? ` ` : `is-filled `
+                          } ${!first_nameError ? ` ` : `is-invalid `}`"
+                        >
+                          <label class="form-label">{{ "First Name" }}</label>
+                          <input
+                            autocomplete="false"
+                            id="first_name"
+                            name="first_name"
+                            type="text"
+                            class="form-control form-control-lg"
+                            v-model="first_name"
+                          />
+                        </div>
+                        <span
+                          class="position-absolute"
+                          v-if="first_nameError"
+                          >{{ first_nameError }}</span
+                        >
                       </div>
-                      <div class="mb-3">
-                        <vmd-input
-                          id="email"
-                          type="email"
-                          label="Email"
-                          name="email"
-                          size="lg"
-                        />
+
+                      <div class="mb-4">
+                        <div
+                          :class="`input-group input-group-outline ${
+                            !last_name ? ` ` : `is-filled `
+                          } ${!last_nameError ? ` ` : `is-invalid `}`"
+                        >
+                          <label class="form-label">{{ "Last Name" }}</label>
+                          <input
+                            autocomplete="false"
+                            id="last_name"
+                            name="last_name"
+                            type="text"
+                            class="form-control form-control-lg"
+                            v-model="last_name"
+                          />
+                        </div>
+                        <span class="position-absolute" v-if="last_nameError">{{
+                          last_nameError
+                        }}</span>
                       </div>
-                      <div class="mb-3">
-                        <vmd-input
-                          id="password"
-                          type="password"
-                          label="Password"
-                          name="password"
-                          size="lg"
-                        />
-                      </div>
+
                       <vmd-checkbox
+                        v-if="false"
                         id="flexCheckDefault"
                         class="font-weight-light"
                         checked
@@ -117,14 +135,67 @@ import VmdCheckbox from "@/components/VmdCheckbox.vue";
 import VmdButton from "@/components/VmdButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
+import { Field, Form, ErrorMessage, useForm, useField } from "vee-validate";
 
 export default {
   name: "sign-up",
   components: {
     Navbar,
-    VmdInput,
+    // VmdInput,
     VmdCheckbox,
     VmdButton,
+  },
+  setup(props) {
+    let { handleSubmit, formMeta, isSubmitting, resetForm } = useForm({
+      validationSchema: {
+        first_name: "required|min:8",
+        last_name: "required|min:8",
+      },
+      initialValues: {
+        first_name: "",
+        last_name: "",
+      },
+    });
+    const {
+      value: first_name,
+      errorMessage: first_nameError,
+      meta: first_namemeta,
+    } = useField("first_name", undefined, { label: "First Name" });
+    const {
+      value: last_name,
+      errorMessage: last_nameError,
+      meta: last_namemeta,
+    } = useField("last_name", undefined, { label: "Last Name" });
+
+    const validate = handleSubmit(
+      function validate(values) {
+        if (values === undefined) return false;
+        return values;
+      },
+      function onInvalidSubmit({ values, errors, results }) {
+        console.log({
+          values, // current form values
+          errors, // a map of field names and their first error message
+          results, // a detailed map of field names and their validation results
+        });
+        // resetForm();
+      }
+    );
+
+    return {
+      validate,
+      isSubmitting,
+      resetForm,
+      first_name,
+      first_nameError,
+      last_name,
+      last_nameError,
+    };
+  },
+  data() {
+    return {
+      submitted: false,
+    };
   },
   beforeMount() {
     this.toggleEveryDisplay();
@@ -138,6 +209,12 @@ export default {
   },
   methods: {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
+    register: function () {
+      this.validate().then((values) => {
+        if (!values) return;
+        console.log({ values });
+      });
+    },
   },
 };
 </script>

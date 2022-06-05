@@ -78,9 +78,16 @@ router.beforeEach((to, from, next) => {
   console.log({ user, from: { ...from }, to: { ...to } });
 
   if (user) {
+    console.log("next");
+    return next();
+  } else if (from.fullPath === "/sign-in" && to.fullPath === "/sign-up") {
+    console.log("sing-in to sign-up");
+    return next();
+  } else if (from.fullPath === "/" && to.fullPath === "/sign-up") {
+    console.log("/ to sign-up");
     return next();
   } else if (!user && to.fullPath !== "/sign-in") {
-    console.log();
+    console.log("sign-in");
     return next({ path: "/sign-in" });
   }
 

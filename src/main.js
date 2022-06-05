@@ -6,6 +6,13 @@ import "./assets/css/nucleo-icons.css";
 import "./assets/css/nucleo-svg.css";
 import MaterialDashboard from "./material-dashboard";
 
+import { defineRule } from "vee-validate";
+import AllRules from "@vee-validate/rules";
+
+Object.keys(AllRules).forEach((rule) => {
+  defineRule(rule, AllRules[rule]);
+});
+
 const appInstance = createApp(App);
 
 appInstance.config.devtools = true;
