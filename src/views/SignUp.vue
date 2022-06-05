@@ -409,8 +409,18 @@ export default {
             return data;
           })
           .then((data) => {
-            if (!data) return
-            return this.$router.replace({ path: "/dashboard" });
+            if (!data) return;
+            let user = data?.Records?.[0];
+            let isAdmin = user?.is_admin == "Y";
+
+            if (isAdmin) return this.$router.replace({ path: "/dashboard" });
+            else
+              this.$router.push({
+                path: "/myprofile",
+                query: {
+                  user_id: user.user_id,
+                },
+              });
           })
           .catch((err) => {
             console.log({ err });

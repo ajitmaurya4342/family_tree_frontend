@@ -4,8 +4,8 @@ import Tables from "../views/Tables.vue";
 import Billing from "../views/Billing.vue";
 import RTL from "../views/Rtl.vue";
 import Notifications from "../views/Notifications.vue";
-import Profile from "../views/MyProfile.vue";
-import MyProfile from "../views/Profile.vue";
+import Profile from "../views/Profile.vue";
+import MyProfile from "../views/MyProfile.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 
@@ -81,19 +81,19 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   let user = localStorage.getItem("user");
-  console.log({ user, from: { ...from }, to: { ...to } });
+  // console.log({ user, from: { ...from }, to: { ...to } });
 
   if (user) {
-    console.log("next");
+    // console.log("next");
     return next();
   } else if (from.fullPath === "/sign-in" && to.fullPath === "/sign-up") {
-    console.log("sing-in to sign-up");
+    // console.log("sing-in to sign-up");
     return next();
   } else if (from.fullPath === "/" && to.fullPath === "/sign-up") {
-    console.log("/ to sign-up");
+    // console.log("/ to sign-up");
     return next();
   } else if (!user && to.fullPath !== "/sign-in") {
-    console.log("sign-in");
+    // console.log("sign-in");
     return next({ path: "/sign-in" });
   }
 

@@ -193,9 +193,18 @@ export default {
           return false;
         }
 
-        localStorage.setItem("user", JSON.stringify(data?.Records?.[0]));
+        let user = data?.Records?.[0];
+        let isAdmin = user?.is_admin == "Y";
+        localStorage.setItem("user", JSON.stringify(user));
 
-        await this.$router.replace({ path: "/dashboard" });
+        if (isAdmin) await this.$router.replace({ path: "/dashboard" });
+        else
+          await this.$router.push({
+            path: "/myprofile",
+            query: {
+              user_id: user.user_id,
+            },
+          });
       } catch (e) {
         this.error = "Something went wrong!";
         console.log("Err", e);

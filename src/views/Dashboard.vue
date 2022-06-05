@@ -16,7 +16,7 @@
                     type="text"
                     label="Search User"
                     @input="onSearchUser"
-                
+
                   />
                 </div>
           </div>
@@ -34,7 +34,7 @@
                       class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                     >
                      Email
-                      
+
                     </th>
                     <th
                       class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
@@ -65,7 +65,7 @@
                         <div class="d-flex flex-column justify-content-center">
                           <h6 class="mb-0 text-sm">{{user.first_name}} {{user.last_name}}</h6>
                           <p class="text-xs text-secondary mb-0">
-                      
+
                           </p>
                         </div>
                       </div>
@@ -87,12 +87,13 @@
                         class="text-secondary font-weight-bold text-xs"
                         data-toggle="tooltip"
                         data-original-title="Edit user"
+                        @click="gotoEditUser(user)"
                       >
                         Edit
                       </a>
                     </td>
                   </tr>
-                 
+
                 </tbody>
               </table>
             </div>
@@ -100,9 +101,9 @@
         </div>
       </div>
     </div>
-    
 
-  
+
+
   </div>
 </template>
 <script>
@@ -134,13 +135,22 @@ export default {
     VmdInput
   },
   methods:{
+    gotoEditUser(user) {
+      console.log({ user });
+      this.$router.push({
+        path: "/myprofile",
+        query: {
+          user_id: user.user_id,
+        },
+      });
+    },
    async getUserList(){
        let { data } = await UserService.GetUserList();
-      
+
        this.tempUser=data.Records.filter(z=>{
          return z.user_id>1
        })
-        
+
       this.linked_relation=this.tempUser.filter(z=>{
         return z.relation
       })
@@ -148,9 +158,9 @@ export default {
         return z.relation==""
       })
       this.user_list=[...this.not_linked_relation,...this.linked_relation]
-       
+
     },
-    
+
     onSearchUser: function(value) {
       if (this.searchValue && this.searchValue.length > 0) {
         let search_value = this.searchValue.toLowerCase();
@@ -170,7 +180,7 @@ export default {
                 .toLowerCase()
                 .includes(search_value);
             } else {
-                
+
               obj[y] = x[y]?(x[y]).toLowerCase().includes(search_value):"";
             }
             console.log(check, obj[y])

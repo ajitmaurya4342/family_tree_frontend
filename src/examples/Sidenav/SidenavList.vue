@@ -17,7 +17,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" v-if="false">
         <sidenav-collapse
           url="#"
           :aria-controls="''"
@@ -30,7 +30,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <li class="nav-item"  v-if="false">
         <sidenav-collapse
           url="#"
           :aria-controls="''"
@@ -43,7 +43,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <li class="nav-item"  v-if="false">
         <sidenav-collapse
           url="#"
           :aria-controls="''"
@@ -58,7 +58,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      <li class="nav-item">
+      <li class="nav-item"  v-if="false">
         <sidenav-collapse
           url="#"
           :aria-controls="''"

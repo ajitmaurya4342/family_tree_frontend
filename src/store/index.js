@@ -42,6 +42,9 @@ let Store = createStore({
         state.isNavFixed = false;
       }
     },
+    toggleSidebar(state) {
+      state.showSidenav = !state.showSidenav;
+    },
     toggleEveryDisplay(state) {
       state.showNavbar = !state.showNavbar;
       state.showSidenav = !state.showSidenav;
