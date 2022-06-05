@@ -59,6 +59,18 @@
                     :error="error.length > 0"
                   />
                 </div>
+
+                <div style="display: flex; flex-direction: row-reverse">
+                  <vmd-badge
+                    variant="gradient"
+                    color="info"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="left"
+                    title="Hint: first 3 letters of first name and birth year"
+                    >!</vmd-badge
+                  >
+                </div>
+
                 <vmd-switch
                   id="rememberMe"
                   name="rememberMe"
@@ -147,6 +159,7 @@ import Navbar from "@/examples/PageLayout/Navbar.vue";
 import VmdInput from "@/components/VmdInput.vue";
 import VmdSwitch from "@/components/VmdSwitch.vue";
 import VmdButton from "@/components/VmdButton.vue";
+import VmdBadge from "@/components/VmdBadge.vue";
 import { mapMutations } from "vuex";
 import UserService from "@/services/UserService";
 
@@ -157,6 +170,7 @@ export default {
     VmdInput,
     VmdSwitch,
     VmdButton,
+    VmdBadge,
   },
   data() {
     return {
