@@ -4,7 +4,8 @@ import Tables from "../views/Tables.vue";
 import Billing from "../views/Billing.vue";
 import RTL from "../views/Rtl.vue";
 import Notifications from "../views/Notifications.vue";
-import Profile from "../views/Profile.vue";
+import Profile from "../views/MyProfile.vue";
+import MyProfile from "../views/Profile.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 
@@ -49,6 +50,11 @@ const routes = [
     path: "/notifications",
     name: "Notifications",
     component: Notifications,
+  },
+  {
+    path: "/myprofile",
+    name: "MyProfile",
+    component: MyProfile,
   },
   {
     path: "/profile",

@@ -84,6 +84,19 @@
           url="#"
           :aria-controls="''"
           v-bind:collapse="false"
+          collapseRef="myprofile"
+          navText="MyProfile"
+        >
+          <template v-slot:icon>
+            <i class="material-icons-round opacity-10 fs-5">person</i>
+          </template>
+        </sidenav-collapse>
+      </li>
+      <li class="nav-item" v-if="false">
+        <sidenav-collapse
+          url="#"
+          :aria-controls="''"
+          v-bind:collapse="false"
           collapseRef="profile"
           navText="Profile"
         >
@@ -120,7 +133,7 @@
       </li>
     </ul>
     <div class="sidenav-footer position-absolute w-100 bottom-0">
-      <div class="mx-3">
+      <div class="mx-3" v-if="false">
         <a
           class="btn mt-4 w-100"
           :class="`bg-gradient-${this.$store.state.color}`"
