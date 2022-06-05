@@ -21,6 +21,7 @@
   "dependencies": {
     "@popperjs/core": "2.10.2",
     "@vee-validate/rules": "^4.5.11",
+    "@vueform/multiselect": "^2.4.2",
     "@vuepic/vue-datepicker": "^3.2.2",
     "axios": "^0.27.2",
     "bootstrap": "5.1.3",
