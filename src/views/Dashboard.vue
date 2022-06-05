@@ -1,279 +1,190 @@
 <template>
   <div class="py-4 container-fluid">
-    <div class="row mb-4">
-      <div class="col-lg-12 position-relative z-index-2">
-        <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-6">
-            <mini-statistics-card
-              :title="{ text: 'Today\'s Money', value: '$53k' }"
-              detail="<span class='text-success text-sm font-weight-bolder'>+55%</span> than last week"
-              :icon="{
-                name: 'weekend',
-                color: 'text-white',
-                background: 'dark',
-              }"
-            />
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
-            <mini-statistics-card
-              :title="{ text: 'Today\'s Users', value: '2,300' }"
-              detail="<span class='text-success text-sm font-weight-bolder'>+3%</span> than last month"
-              :icon="{
-                name: 'leaderboard',
-                color: 'text-white',
-                background: 'primary',
-              }"
-            />
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
-            <mini-statistics-card
-              :title="{ text: 'New Clients', value: '3,462' }"
-              detail="<span class='text-danger text-sm font-weight-bolder'>-2%</span> than yesterday"
-              :icon="{
-                name: 'person',
-                color: 'text-white',
-                background: 'success',
-              }"
-            />
-          </div>
-          <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
-            <mini-statistics-card
-              :title="{ text: 'Sales', value: '$103,430' }"
-              detail="<span class='text-success text-sm font-weight-bolder'>+5%</span> Just updated"
-              :icon="{
-                name: 'weekend',
-                color: 'text-white',
-                background: 'info',
-              }"
-            />
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-lg-4 col-md-6 mt-4">
-            <chart-holder-card
-              title="Website Views"
-              subtitle="Last Campaign Performance"
-              update="campaign sent 2 days ago"
+  <div class="row" v-if="checkIsAdminLogin">
+      <div class="col-12">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div
+              class="bg-gradient-success shadow-success border-radius-lg pt-4 pb-3"
             >
-              <reports-bar-chart
-                :chart="{
-                  labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-                  datasets: {
-                    label: 'Sales',
-                    data: [50, 20, 10, 22, 50, 10, 40],
-                  },
-                }"
-              />
-            </chart-holder-card>
+              <h6 class="text-white text-capitalize ps-3">Users table</h6>
+            </div>
+            <div class="mb-3 mt-3">
+                  <vmd-input
+                    v-model="searchValue"
+                    id="user_name"
+                    type="text"
+                    label="Search User"
+                    @input="onSearchUser"
+                
+                  />
+                </div>
           </div>
-          <div class="col-lg-4 col-md-6 mt-4">
-            <chart-holder-card
-              title="Daily Sales"
-              subtitle="(<span class='font-weight-bolder'>+15%</span>) increase in today sales."
-              update="updated 4 min ago"
-              color="success"
-            >
-              <reports-line-chart
-                :chart="{
-                  labels: [
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec',
-                  ],
-                  datasets: {
-                    label: 'Mobile apps',
-                    data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-                  },
-                }"
-              />
-            </chart-holder-card>
-          </div>
-          <div class="col-lg-4 mt-4">
-            <chart-holder-card
-              title="Completed Tasks"
-              subtitle="Last Campaign Performance"
-              update="just updated"
-              color="dark"
-            >
-              <reports-line-chart
-                id="tasks-chart"
-                :chart="{
-                  labels: [
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec',
-                  ],
-                  datasets: {
-                    label: 'Mobile apps',
-                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                  },
-                }"
-              />
-            </chart-holder-card>
+          <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0" >
+                <thead>
+                  <tr>
+                    <th
+                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      User Name
+                    </th>
+                    <th
+                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                    >
+                     Email
+                      
+                    </th>
+                    <th
+                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Relation Linked
+                    </th>
+                    <th
+                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                    >
+                      Date of Birth
+                    </th>
+                    <th class="text-secondary opacity-7"></th>
+                  </tr>
+                </thead>
+                <tbody v-if="user_list.length">
+                  <tr v-for="(user,index) in user_list" :key="index">
+                    <td>
+                      <div class="d-flex px-2 py-1" >
+                        <div>
+                          <img
+                            src="../assets/img/team-2.jpg"
+                            v-if="user.picture"
+                            class="avatar avatar-sm me-3 border-radius-lg"
+                            alt="user1"
+                          />
+                          <i class="material-icons me-sm-2" v-else> account_circle </i>
+                        </div>
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{user.first_name}} {{user.last_name}}</h6>
+                          <p class="text-xs text-secondary mb-0">
+                      
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">      {{user.email}} </p>
+                    </td>
+                    <td class="align-middle text-center text-sm font-weight-bold">
+                     <span :style="!user.relation_linked?'color:red':''"> {{ user.relation}}</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs font-weight-bold"
+                        > {{user.dob}}</span
+                      >
+                    </td>
+                    <td class="align-middle">
+                      <a
+                        href="javascript:;"
+                        class="text-secondary font-weight-bold text-xs"
+                        data-toggle="tooltip"
+                        data-original-title="Edit user"
+                      >
+                        Edit
+                      </a>
+                    </td>
+                  </tr>
+                 
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    
 
-    <div class="row">
-      <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
-        <project-card
-          title="Projects"
-          description="<i class='fa fa-check text-info' aria-hidden='true'></i> <span class='font-weight-bold ms-1'>30 done</span> this month"
-          :headers="['Companies', 'Members', 'Budget', 'Progress']"
-          :projects="[
-            {
-              logo: logoXD,
-              title: 'Material XD Material XD Version',
-              members: [team1, team2, team3, team4],
-              budget: '$14,000',
-              progress: { percentage: 60, color: 'info' },
-            },
-            {
-              logo: logoAtlassian,
-              title: 'Add Progress Track',
-              members: [team2, team4],
-              budget: '$3,000',
-              progress: { percentage: 10, color: 'info' },
-            },
-            {
-              logo: logoSlack,
-              title: 'Fix Platform Errors',
-              members: [team3, team1],
-              budget: 'Not set',
-              progress: { percentage: 100, color: 'success' },
-            },
-            {
-              logo: logoSpotify,
-              title: 'Launch our Mobile App',
-              members: [team4, team3, team4, team1],
-              budget: '$20,500',
-              progress: { percentage: 100, color: 'success' },
-            },
-            {
-              logo: logoJira,
-              title: 'Add the New Pricing Page',
-              members: [team4],
-              budget: '$500',
-              progress: { percentage: 25, color: 'info' },
-            },
-            {
-              logo: logoJira,
-              title: 'Redesign New Online Shop',
-              members: [team1, team4],
-              budget: '$2,000',
-              progress: { percentage: 40, color: 'info' },
-            },
-          ]"
-        />
-      </div>
-      <div class="col-lg-4 col-md-6">
-        <timeline-list
-          class="h-100"
-          title="Orders overview"
-          description="<i class='fa fa-arrow-up text-success' aria-hidden='true'></i>
-        <span class='font-weight-bold'>24%</span> this month"
-        >
-          <timeline-item
-            :icon="{
-              component: 'notifications',
-              class: 'text-success',
-            }"
-            title="$2400 Design changes"
-            date-time="22 DEC 7:20 PM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'code',
-              class: 'text-danger',
-            }"
-            title="New order #1832412"
-            date-time="21 DEC 11 PM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'shopping_cart',
-              class: 'text-info',
-            }"
-            title="Server payments for April"
-            date-time="21 DEC 9:34 PM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'credit_card',
-              class: 'text-warning',
-            }"
-            title="New card added for order #4395133"
-            date-time="20 DEC 2:20 AM"
-          />
-          <TimelineItem
-            :icon="{
-              component: 'vpn_key',
-              class: 'text-primary',
-            }"
-            title="Unlock packages for development"
-            date-time="18 DEC 4:54 AM"
-            class="pb-1"
-          />
-        </timeline-list>
-      </div>
-    </div>
+  
   </div>
 </template>
 <script>
-import ChartHolderCard from "./components/ChartHolderCard.vue";
-import ReportsBarChart from "@/examples/Charts/ReportsBarChart.vue";
-import ReportsLineChart from "@/examples/Charts/ReportsLineChart.vue";
-import MiniStatisticsCard from "./components/MiniStatisticsCard.vue";
-import ProjectCard from "./components/ProjectCard.vue";
-import TimelineList from "@/examples/Cards/TimelineList.vue";
-import TimelineItem from "@/examples/Cards/TimelineItem.vue";
-import logoXD from "@/assets/img/small-logos/logo-xd.svg";
-import logoAtlassian from "@/assets/img/small-logos/logo-atlassian.svg";
-import logoSlack from "@/assets/img/small-logos/logo-slack.svg";
-import logoSpotify from "@/assets/img/small-logos/logo-spotify.svg";
-import logoJira from "@/assets/img/small-logos/logo-jira.svg";
-import logoInvision from "@/assets/img/small-logos/logo-invision.svg";
-import team1 from "@/assets/img/team-1.jpg";
-import team2 from "@/assets/img/team-2.jpg";
-import team3 from "@/assets/img/team-3.jpg";
-import team4 from "@/assets/img/team-4.jpg";
+import UserService from "@/services/UserService";
+import VmdInput from "@/components/VmdInput.vue";
+
 export default {
   name: "dashboard-default",
   data() {
     return {
-      logoXD,
-      team1,
-      team2,
-      team3,
-      team4,
-      logoAtlassian,
-      logoSlack,
-      logoSpotify,
-      logoJira,
-      logoInvision,
+      user_list:[],
+      tempUser:[],
+      linked_relation:[],
+      not_linked_relation:[],
+      searchValue:""
     };
   },
-  components: {
-    ChartHolderCard,
-    ReportsBarChart,
-    ReportsLineChart,
-    MiniStatisticsCard,
-    ProjectCard,
-    TimelineList,
-    TimelineItem,
+  computed:{
+    checkIsAdminLogin(){
+      let storage=JSON.parse(localStorage.getItem("user"))
+      return storage.is_admin=='Y' || true
+    }
+
   },
+  beforeMount(){
+   this.getUserList()
+  },
+  components: {
+    VmdInput
+  },
+  methods:{
+   async getUserList(){
+       let { data } = await UserService.GetUserList();
+      
+       this.tempUser=data.Records.filter(z=>{
+         return z.user_id>1
+       })
+        
+      this.linked_relation=this.tempUser.filter(z=>{
+        return z.relation
+      })
+        this.not_linked_relation=this.tempUser.filter(z=>{
+        return z.relation==""
+      })
+      this.user_list=[...this.not_linked_relation,...this.linked_relation]
+       
+    },
+    
+    onSearchUser: function(value) {
+      if (this.searchValue && this.searchValue.length > 0) {
+        let search_value = this.searchValue.toLowerCase();
+        let check_array = [
+          "email",
+          "phone_no",
+          "full_name",
+          "relation",
+          "dob"
+        ];
+        this.user_list = this.tempUser.filter(x => {
+          let obj = {};
+          let check = false;
+          check_array.map(y => {
+            if (typeof x[y] == "object") {
+              obj[y] = JSON.stringify(x[y])
+                .toLowerCase()
+                .includes(search_value);
+            } else {
+                
+              obj[y] = x[y]?(x[y]).toLowerCase().includes(search_value):"";
+            }
+            console.log(check, obj[y])
+            if (!check && obj[y]) {
+              check = true;
+            }
+          });
+          return check;
+        });
+        // console.log(users)
+      } else {
+        this.user_list = [...this.unlinked_relation,...this.linked_relation];
+      }
+    }
+  }
 };
 </script>
