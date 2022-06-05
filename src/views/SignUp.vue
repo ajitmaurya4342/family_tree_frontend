@@ -402,12 +402,14 @@ export default {
               localStorage.setItem("user", JSON.stringify(data?.Records?.[0]));
             } else {
               this.toast.info(data.message);
+              return;
             }
             console.log({ data: { ...data } });
 
             return data;
           })
           .then((data) => {
+            if (!data) return
             return this.$router.replace({ path: "/dashboard" });
           })
           .catch((err) => {
