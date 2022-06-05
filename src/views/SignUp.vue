@@ -52,11 +52,12 @@
                             name="first_name"
                             type="text"
                             class="form-control form-control-lg"
-                            v-model="first_name"
+                            v-model.trim="first_name"
                           />
                         </div>
                         <span
                           class="position-absolute"
+                          style="font-size: small"
                           v-if="first_nameError"
                           >{{ first_nameError }}</span
                         >
@@ -75,12 +76,142 @@
                             name="last_name"
                             type="text"
                             class="form-control form-control-lg"
-                            v-model="last_name"
+                            v-model.trim="last_name"
                           />
                         </div>
-                        <span class="position-absolute" v-if="last_nameError">{{
-                          last_nameError
-                        }}</span>
+                        <span
+                          class="position-absolute"
+                          style="font-size: small"
+                          v-if="last_nameError"
+                          >{{ last_nameError }}</span
+                        >
+                      </div>
+                      <div class="mb-4">
+                        <div
+                          :class="`input-group input-group-outline ${
+                            !email ? ` ` : `is-filled `
+                          } ${!emailError ? ` ` : `is-invalid `}`"
+                        >
+                          <label class="form-label">{{ "Email" }}</label>
+                          <input
+                            autocomplete="false"
+                            id="email"
+                            name="email"
+                            type="text"
+                            class="form-control form-control-lg"
+                            v-model.trim="email"
+                          />
+                        </div>
+                        <span
+                          class="position-absolute"
+                          style="font-size: small"
+                          v-if="emailError"
+                          >{{ emailError }}</span
+                        >
+                      </div>
+                      <div class="mb-4">
+                        <div
+                          :class="`input-group input-group-outline ${
+                            !phone_number ? ` ` : `is-filled `
+                          } ${!phone_numberError ? ` ` : `is-invalid `}`"
+                        >
+                          <label class="form-label">{{ "Phone number" }}</label>
+                          <input
+                            autocomplete="false"
+                            id="phone_number"
+                            name="phone_number"
+                            type="text"
+                            class="form-control form-control-lg"
+                            v-model.number="phone_number"
+                          />
+                        </div>
+                        <span
+                          class="position-absolute"
+                          style="font-size: small"
+                          v-if="phone_numberError"
+                          >{{ phone_numberError }}</span
+                        >
+                      </div>
+                      <div class="d-flex mb-2">
+                        <span>Gender&nbsp;</span>
+                        <div class="form-check">
+                          <input
+                            checked
+                            id="genderMale"
+                            name="gender"
+                            class="form-check-input"
+                            type="radio"
+                            value="Male"
+                            v-model="gender"
+                          />
+                          <label class="custom-control-label" for="genderMale">
+                            Male
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            id="genderFemale"
+                            name="gender"
+                            class="form-check-input"
+                            type="radio"
+                            value="Female"
+                            v-model="gender"
+                          />
+                          <label
+                            class="custom-control-label"
+                            for="genderFemale"
+                          >
+                            Female
+                          </label>
+                        </div>
+                      </div>
+                      <div class="d-flex mb-2">
+                        <span>Marital Status&nbsp;</span>
+                        <div class="form-check">
+                          <input
+                            checked
+                            id="married"
+                            name="married"
+                            class="form-check-input"
+                            type="radio"
+                            value="Y"
+                            v-model="is_married"
+                          />
+                          <label class="custom-control-label" for="married">
+                            Married
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            checked
+                            id="unmarried"
+                            name="married"
+                            class="form-check-input"
+                            type="radio"
+                            value="N"
+                            v-model="is_married"
+                          />
+                          <label class="custom-control-label" for="unmarried">
+                            Unmarried
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="mb-2">
+                        <Datepicker
+                          v-model="dob"
+                          autoApply
+                          placeholder="Birthday"
+                          format="yyyy-MM-dd"
+                          :enableTimePicker="false"
+                        >
+                        </Datepicker>
+                        <span
+                          class="position-absolute"
+                          style="font-size: small"
+                          v-if="dobError"
+                          >{{ dobError }}</span
+                        >
                       </div>
 
                       <vmd-checkbox
@@ -110,7 +241,7 @@
                   </div>
                   <div class="px-1 pt-0 text-center card-footer px-lg-2">
                     <p class="mx-auto mb-4 text-sm">
-                      Don't have an account?
+                      Already registered?
                       <router-link
                         :to="{ name: 'SignIn' }"
                         class="text-success text-gradient font-weight-bold"
@@ -136,6 +267,11 @@ import VmdButton from "@/components/VmdButton.vue";
 const body = document.getElementsByTagName("body")[0];
 import { mapMutations } from "vuex";
 import { Field, Form, ErrorMessage, useForm, useField } from "vee-validate";
+import Datepicker from "@vuepic/vue-datepicker";
+import { isValid, format } from "date-fns";
+import { useToast } from "vue-toastification";
+
+import UserService from "@/services/UserService";
 
 export default {
   name: "sign-up",
@@ -144,16 +280,27 @@ export default {
     // VmdInput,
     VmdCheckbox,
     VmdButton,
+    Datepicker,
   },
-  setup(props) {
+  setup(props, context) {
+    const toast = useToast();
+
     let { handleSubmit, formMeta, isSubmitting, resetForm } = useForm({
       validationSchema: {
-        first_name: "required|min:8",
-        last_name: "required|min:8",
+        first_name: "required|min:1",
+        last_name: "required|min:1",
+        email: "required|email",
+        phone_number: "required|integer|between:1000000000,9999999999",
+        dob(value) {
+          return isValid(value);
+        },
       },
       initialValues: {
         first_name: "",
         last_name: "",
+        email: "",
+        phone_number: "",
+        dob: "",
       },
     });
     const {
@@ -166,6 +313,21 @@ export default {
       errorMessage: last_nameError,
       meta: last_namemeta,
     } = useField("last_name", undefined, { label: "Last Name" });
+    const {
+      value: email,
+      errorMessage: emailError,
+      meta: emailmeta,
+    } = useField("email", undefined, { label: "Email" });
+    const {
+      value: phone_number,
+      errorMessage: phone_numberError,
+      meta: phone_numbermeta,
+    } = useField("phone_number", undefined, { label: "Phone number" });
+    const {
+      value: dob,
+      errorMessage: dobError,
+      meta: dobmeta,
+    } = useField("dob", undefined, { label: "Birthday" });
 
     const validate = handleSubmit(
       function validate(values) {
@@ -183,6 +345,7 @@ export default {
     );
 
     return {
+      toast,
       validate,
       isSubmitting,
       resetForm,
@@ -190,11 +353,19 @@ export default {
       first_nameError,
       last_name,
       last_nameError,
+      email,
+      emailError,
+      phone_number,
+      phone_numberError,
+      dob,
+      dobError,
     };
   },
   data() {
     return {
       submitted: false,
+      gender: "Male",
+      is_married: "N",
     };
   },
   beforeMount() {
@@ -211,8 +382,37 @@ export default {
     ...mapMutations(["toggleEveryDisplay", "toggleHideConfig"]),
     register: function () {
       this.validate().then((values) => {
-        if (!values) return;
-        console.log({ values });
+        if (!values) {
+          this.toast.info("Please complete the form");
+          return;
+        }
+
+        let payload = {
+          ...values,
+          gender: this.gender,
+          is_married: this.is_married,
+        };
+        payload.dob = format(payload.dob, "yyyy-MM-dd");
+
+        console.log({ payload });
+
+        UserService.AddEditUsers(payload)
+          .then(({ data }) => {
+            if (data?.status) {
+              localStorage.setItem("user", JSON.stringify(data?.Records?.[0]));
+            } else {
+              this.toast.info(data.message);
+            }
+            console.log({ data: { ...data } });
+
+            return data;
+          })
+          .then((data) => {
+            return this.$router.replace({ path: "/dashboard" });
+          })
+          .catch((err) => {
+            console.log({ err });
+          });
       });
     },
   },
