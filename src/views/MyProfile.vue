@@ -164,6 +164,7 @@
                         <div class="form-check">
                           <input
                             checked
+                            @input="genderChange"
                             id="genderMale"
                             name="gender"
                             class="form-check-input"
@@ -177,6 +178,7 @@
                         </div>
                         <div class="form-check">
                           <input
+                            @input="genderChange"
                             id="genderFemale"
                             name="gender"
                             class="form-check-input"
@@ -197,6 +199,7 @@
                         <div class="form-check">
                           <input
                             checked
+                              @input="marriedChange"
                             id="married"
                             name="married"
                             class="form-check-input"
@@ -210,6 +213,7 @@
                         </div>
                         <div class="form-check">
                           <input
+                            @input="marriedChange"
                             checked
                             id="unmarried"
                             name="married"
@@ -261,10 +265,122 @@
                           color="success"
                           fullWidth
                           size="lg"
-                          >Save</vmd-button
+                          >Update Profile</vmd-button
                         >
                       </div>
+
+
+
+                      
                     </form>
+                    
+                       <div v-if="show_relation">
+                       <div class="pb-0 card-header bg-transparent mt-4">
+                       <h4 class="font-weight-bolder">Link Your Relation</h4>
+                        </div>
+
+
+
+                       <div class="d-flex mb-2 mt-4" v-if="this.gender=='Male'">
+                        <span>Relation&nbsp;</span>
+                        <div class="form-check">
+                          <input
+                            
+                            id="sonof"
+                            name="is_son_of"
+                            class="form-check-input"
+                            type="radio"
+                            value="Y"
+                            @input="MaleRelation"
+                            v-model="is_son_of"
+                          />
+                          <label class="custom-control-label" for="sonof">
+                            Son of Shroff Family 
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            id="sonofs"
+                            name="is_son_of"
+                            class="form-check-input"
+                            type="radio"
+                            value="N"
+                            @input="MaleRelation"
+                            v-model="is_son_of"
+                          />
+                          <label
+                            class="custom-control-label"
+                            for="sonofs"
+                          >
+                            Husband of Shroff Family
+                          </label>
+                        </div>
+                      </div>
+
+                       <div class="d-flex mb-2 mt-4" v-if="this.gender=='Female'">
+                        <span>Relation&nbsp;</span>
+                        <div class="form-check">
+                          <input
+                            
+                            id="daughterOf"
+                            name="is_son_of"
+                            class="form-check-input"
+                            type="radio"
+                            value="Y"
+                            v-model="is_daughter_of"
+                               @input="FemaleRelation"
+                          />
+                          <label class="custom-control-label" for="daughterOf">
+                            Daughter of Shroff Family  
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            id="daughterofs"
+                            name="is_son_of"
+                            class="form-check-input"
+                            type="radio"
+                            value="N"
+                            v-model="is_daughter_of"
+                               @input="FemaleRelation"
+
+                          />
+                          <label
+                            class="custom-control-label"
+                            for="daughterofs"
+                          >
+                            Wife of Shroff Family
+                          </label>
+                        </div>
+                      </div>
+
+                        <div class="d-flex mb-2 mt-4 mb-5" v-if="this.is_son_of || this.is_daughter_of">
+                        <label>Select Relation :</label>
+                         <Multiselect
+                            v-model="parent_detail"
+                            :options="user_list_with_level"
+                            :label="full_name"
+                            :track-by="user_id"
+                            :searchable="true"
+                          />
+                        
+                        </div>
+
+                      <div class="text-center" v-if="parent_detail">
+                        <vmd-button
+                          class="mt-4"
+                          variant="gradient"
+                          color="success"
+                          @click="linkRelation"
+                          
+                          size="lg"
+                          >Link Your Relation</vmd-button
+                        >
+                      </div>
+
+                        </div>
+
+                    
                   </div>
                   <div class="px-1 pt-0 text-center card-footer px-lg-2"></div>
                 </div>
@@ -306,6 +422,7 @@ import VmdCheckbox from "@/components/VmdCheckbox";
 import VmdButton from "@/components/VmdButton";
 import Datepicker from "@vuepic/vue-datepicker";
 import { mapMutations } from "vuex";
+import Multiselect from '@vueform/multiselect'
 
 const body = document.getElementsByTagName("body")[0];
 
@@ -399,20 +516,31 @@ export default {
       dobError,
       description,
       descriptionError,
+      
     };
   },
   data() {
     return {
       submitted: false,
       gender: "Male",
+      originalGender:"",
+      originalMarried:"",
+      show_relation:true,
       is_married: "N",
-
+      relation_linked:"",
+      is_son_of:"",
+      is_daughter_of:"",
+      is_parent_id:"",
+      parent_detail:"",
+      user_list_with_level:[],
+      temp_user_list_with_level:[],
       user_list: [],
       tempUser: [],
       linked_relation: [],
       not_linked_relation: [],
       searchValue: "",
       current_user: {},
+      is_male:false,
 
       showMenu: false,
       sophie,
@@ -437,6 +565,7 @@ export default {
     VmdCheckbox,
     VmdButton,
     Datepicker,
+    Multiselect
   },
   computed: {
     checkIsAdminLogin() {
@@ -471,6 +600,80 @@ export default {
       "toggleEveryDisplay",
       "toggleHideConfig",
     ]),
+   MaleRelation(parentId){
+
+      setTimeout(()=>{
+         console.log(this.gender,"Male")
+         let temparray=[...this.temp_user_list_with_level]
+        if(this.is_son_of=='Y'){
+          this.user_list_with_level=temparray
+        }else{
+          this.user_list_with_level=temparray.filter(z=>{
+            return z.gender=='Female'
+          })
+        }
+        if(!parentId){
+         this.parent_detail=""
+
+        }
+         this.$forceUpdate()
+      },100)
+     
+
+    },
+     FemaleRelation(parentId){
+
+      setTimeout(()=>{
+         console.log(this.is_daughter_of,"Female")
+        
+         let temparray=[...this.temp_user_list_with_level]
+        if(this.is_daughter_of=='Y'){
+          this.user_list_with_level=temparray
+        }else{
+          this.user_list_with_level=temparray.filter(z=>{
+            return z.gender=='Male' && z.is_married=='Y'
+          })
+        }
+          this.$forceUpdate()
+         if(!parentId){
+         this.parent_detail=""
+
+        }
+      },100)
+     
+
+    },
+    
+    genderChange(){
+
+      setTimeout(()=>{
+         console.log(this.gender)
+        if(this.originalGender==this.gender){
+          console.log("Gender Change")
+          this.show_relation=true;
+        }else{
+          this.show_relation=false;
+        }
+
+      },100)
+     
+
+    },
+    marriedChange(){
+
+      setTimeout(()=>{
+         console.log(this.is_married)
+        if(this.originalMarried==this.is_married){
+          console.log("Married Change")
+          this.show_relation=true;
+        }else{
+          this.show_relation=false;
+        }
+
+      },100)
+     
+
+    },
     async getUserList() {
       console.log("getUserList");
 
@@ -489,6 +692,13 @@ export default {
       });
 
       this.user_list = [...this.not_linked_relation, ...this.linked_relation];
+       this.temp_user_list_with_level=this.tempUser.filter(z=>{
+        return z.user_level  && z.is_married=='Y'
+      })
+      console.log(this.temp_user_list_with_level,"teeeee---")
+      this.user_list_with_level=this.tempUser.filter(z=>{
+        return z.user_level   && z.is_married=='Y'
+      })
 
       let current_user_id = this.$route.query.user_id;
       let user = this.user_list.filter((u) => u.user_id == current_user_id)[0];
@@ -500,9 +710,76 @@ export default {
       this.email = user.email;
       this.phone_number = user.phone_number;
       this.gender = user.gender;
+      this.originalGender = user.gender;
       this.is_married = user.is_married;
+      this.originalMarried = user.is_married;
       this.description = user.description;
       this.dob = new Date(user.dob);
+
+      this.is_male= user.gender=='Male'
+
+      //Relation Related
+      console.log(user,"parent_detail")
+      if(user.relation_linked){
+      this.is_son_of=user.is_son_of
+      this.is_daughter_of=user.is_daughter_of
+      }
+
+      if(this.is_male && this.is_son_of=='Y'){
+         this.is_daughter_of="";
+        let parent_detail=this.user_list.filter(_z=>{
+          return _z.user_id==user.parent_id
+        })
+        if(parent_detail.length>0){
+          this.parent_detail=parent_detail[0].user_id
+        }
+       
+      }
+
+      console.log(this.is_male , this.is_daughter_of,this.is_son_of)
+      if(!this.is_male && this.is_daughter_of=='Y'){
+        this.is_son_of="";
+        console.log(user.parent_id,"Parent_Id")
+        let parent_detail=this.user_list.filter(_z=>{
+          return _z.user_id==user.parent_id
+        })
+        if(parent_detail.length>0){
+                this.parent_detail=parent_detail[0].user_id
+        }
+       
+      }
+
+        if( this.is_son_of=='N'){
+             this.is_daughter_of="";
+        let wife_detail=this.user_list.filter(_z=>{
+          return _z.husband_id==user.user_id
+        })
+        if(wife_detail.length>0){
+            this.parent_detail=wife_detail[0].user_id
+        }
+       
+      }
+
+        if(this.is_daughter_of=='N'){
+             this.is_son_of="";
+        let husband_detail=this.user_list.filter(_z=>{
+          return _z.wife_id==user.user_id
+        })
+        if(husband_detail.length>0){
+            this.parent_detail=husband_detail[0].user_id
+        }
+       
+      }
+
+      if(this.gender=='Male'){
+       this.MaleRelation( this.parent_detail);
+      }else{
+        this.FemaleRelation( this.parent_detail);
+      }
+
+      console.log(this.parent_detail,"husband_detail",this.is_son_of,this.is_daughter_of)
+
+      
     },
     register: function () {
       this.validate().then((values) => {
@@ -526,6 +803,13 @@ export default {
             if (data?.status) {
               localStorage.setItem("user", JSON.stringify(data?.Records?.[0]));
               this.toast.info(data?.message);
+              if(!this.show_relation){
+                 UserService.DeLinkRelation({user_id:data?.Records?.[0].user_id})
+                  .then(({ data }) => {
+                   window.location.reload()
+                  });
+
+              }
             } else {
               this.toast.info(data.message);
               return;
@@ -539,6 +823,43 @@ export default {
           });
       });
     },
+     linkRelation: function () {
+       let payload = {
+         user_id: this.current_user.user_id
+        };
+     console.log(this.is_son_of)
+      if(this.is_son_of=='Y'){
+            payload["parent_id"]=this.parent_detail
+            payload["is_son_of"]=this.is_son_of
+        }else  if(this.is_son_of=='N'){
+            payload["wife_id"]=this.parent_detail
+            payload["is_son_of"]=this.is_son_of
+        }else if(this.is_daughter_of=='Y'){
+            payload["parent_id"]=this.parent_detail
+            payload["is_daughter_of"]=this.is_daughter_of
+        }else if(this.is_daughter_of=='N'){
+            payload["wife_id"]=this.parent_detail
+            payload["is_daughter_of"]=this.is_daughter_of
+        }
+
+        UserService.LinkRelation(payload)
+          .then(({ data }) => {
+            if (data?.status) {
+              this.toast.info(data?.message);
+               window.location.reload()
+               
+            } else {
+              this.toast.info(data.message);
+              return;
+            }
+
+            return data;
+          })
+          .catch((err) => {
+            console.log({ err });
+          });
+    },
   },
 };
 </script>
+<style src="@vueform/multiselect/themes/default.css"></style>
